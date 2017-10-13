@@ -1,0 +1,174 @@
+root@internet-flash:~ # ipfw show
+00001           155             7892 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 22
+00001             0                0 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 1701
+00001             9              368 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 3306
+00001           126             9576 allow ip from any to me src-port 123
+00001         34803          3730398 deny log logamount 5000 ip from { not table(10) or table(11) } to any dst-port 1900
+00001             0                0 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 9418
+00002      21111253       3188255653 allow ip from any to 92.242.127.89
+00002      25459341       3126371366 allow ip from 92.242.127.89 to any
+00002        258988         26958665 allow ip from any to 94.249.146.189
+00002        300558        188730402 allow ip from 94.249.146.189 to any
+00003     697049019      64498101167 allow ip from any to 31.148.63.194
+00003    1541865983     222251358379 allow ip from 31.148.63.194 to any
+00003  160224522594   71224827125997 allow ip from 31.148.63.0/25 to any
+00003  236049220357  249590427743264 allow ip from any to 31.148.63.0/25
+00003  505882883922  216178777612097 allow ip from 31.148.62.0/24 to any
+00003  769436475198  838766179396344 allow ip from any to 31.148.62.0/24
+00003     702029291      65524026942 allow ip from any to 31.148.63.198
+00003    1450442833     224455547898 allow ip from 31.148.63.198 to any
+00003  418201555253  205404141817658 allow ip from 31.148.55.0/24 to any
+00003  615325642856  643852168459428 allow ip from any to 31.148.55.0/24
+00003     500938184      45086490907 allow ip from any to 31.148.63.202
+00003    1196169094     164140378462 allow ip from 31.148.63.202 to any
+00003             0                0 allow ip from 31.148.62.0/24 to any
+00003             0                0 allow ip from any to 31.148.62.0/24
+00003 1427402277458  681317324696495 allow ip from 31.148.52.0/22 to any
+00003 2121761801873 2246016763689902 allow ip from any to 31.148.52.0/22
+00003 2830667767783 1206623680353439 allow ip from 31.148.56.0/21 to any
+00003 4166728720268 4502968944308416 allow ip from any to 31.148.56.0/21
+00003             0                0 allow ip from any to 31.148.63.241
+00003             0                0 allow ip from 31.148.63.241 to any
+00003             0                0 allow ip from any to 31.148.61.254
+00003             0                0 allow ip from 31.148.61.254 to any
+00003             0                0 allow ip from any to 31.148.61.250
+00003             0                0 allow ip from 31.148.61.250 to any
+00003             0                0 allow ip from any to 31.148.63.206
+00003             0                0 allow ip from 31.148.63.206 to any
+00003     195461033      16946874858 allow ip from 176.124.15.251 to any
+00003      25784506       3806914484 allow ip from any to 176.124.15.251
+00003          1534            75750 allow ip from any to 172.17.192.0/30
+00003          1557           129209 allow ip from 172.17.192.0/30 to any
+00003     488747338      74447291925 allow ip from 172.17.192.100/30 to any
+00003     240407259      36407277883 allow ip from any to 172.17.192.100/30
+00003      30950736       6014872257 allow ip from 172.17.192.200/30 to any
+00003       4494611        903657024 allow ip from any to 172.17.192.200/30
+00003          1253            65258 allow ip from any to 172.17.192.254
+00003             2              168 allow ip from 172.17.192.254 to any
+00003          1034            83638 allow ip from any to 91.211.16.41
+00003      49930242       6131124714 allow ip from 91.211.16.41 to any
+00003             0                0 allow ip from any to 172.17.192.102
+00003             0                0 allow ip from 172.17.192.102 to any
+00003             0                0 allow ip from any to 172.17.192.202
+00003             0                0 allow ip from 172.17.192.202 to any
+00003   37855064092   41696810356889 allow ip from any to 95.47.204.0/22
+00003   26592186274   10527258679372 allow ip from 95.47.204.0/22 to any
+00003           183            13908 allow ip from any to me src-port 123
+00004          1415           100718 allow ip from any to 192.168.128.0/24
+00004        384647         24859314 allow ip from 192.168.128.0/24 to any
+00004             0                0 allow ip from any to 31.148.63.224/27
+00004             0                0 allow ip from 31.148.63.224/27 to any
+00008             0                0 allow ip from any to 31.148.63.224/27
+00008             0                0 allow ip from 31.148.63.224/27 to any
+00010     161054087      29997090914 allow ip from any to any via lo0
+00011      90141394      17000203941 allow ip from table(11) to me
+00012         44041          3039912 allow ip from table(10) to me dst-port 22
+00013             0                0 allow ip from any to 94.249.146.189
+00013             0                0 allow ip from 94.249.146.189 to any
+00014             0                0 skipto 934 ip from table(86) to any in recv igb5
+00015         46413          2447969 skipto 935 ip from any to table(86) out xmit igb5
+00016     349013212      24381180547 skipto 932 ip from table(76) to any in recv igb7
+00017      79189680      11897734267 skipto 933 ip from any to table(76) out xmit igb7
+00020     239188490      37500111824 allow ip from any to me dst-port 80,443 in recv ix0
+00020        860361         44320652 allow ip from any to me dst-port 80,443 in recv ix1
+00021    3351820831     221116452039 allow ip from any to any dst-port 53
+00021    1120715467     192179216853 allow ip from any to any src-port 53
+00039             0                0 allow ip from table(10) to me dst-port 161,162
+00040          3085           256888 allow icmp from table(10) to me
+00041          2043            73408 allow icmp from table(62) to me in recv ix0
+00041             0                0 allow icmp from table(15) to me in recv ix0
+00041            16             1080 allow icmp from table(62) to me in recv ix1
+00041           968            64515 allow icmp from table(15) to me in recv ix1
+00042             0                0 allow ip from table(10) to me dst-port 1701,1723
+00043          1492           216294 allow ip from table(10) to me dst-port 80,443,9443,9449
+00044         54182          7784084 allow ip from table(62) to me dst-port 80,443,9443 in recv ix0
+00044             0                0 allow ip from table(15) to me dst-port 80,443,9443 in recv ix0
+00044             0                0 allow ip from table(62) to me dst-port 80,443,9443 in recv ix1
+00044             0                0 allow ip from table(15) to me dst-port 80,443,9443 in recv ix1
+00047            62             6444 skipto 180 ip from table(61) to me dst-port 80,443,9443 in recv ix0
+00047             0                0 skipto 180 ip from table(61) to me dst-port 80,443,9443 in recv ix1
+00047             0                0 skipto 180 tcp from table(75) to me dst-port 80,443,9443 in via ng*
+00047             0                0 skipto 180 tcp from table(3) to me dst-port 80,443,9443 in via ng*
+00047             3              480 skipto 180 tcp from table(68) to me dst-port 80,443,9443 { via igb* or via em* }
+00048             0                0 skipto 180 ip from table(68) to me dst-port 1701,1723 { via igb* or via em* }
+00049           164            12464 allow ip from table(63) to me dst-port 123 in recv ix0
+00049         42974          3266024 allow ip from table(63) to me dst-port 123 in recv ix1
+00050             0                0 deny ip from any to 127.0.0.0/8
+00050             0                0 deny ip from 127.0.0.0/8 to any
+00051        743368         62165191 allow icmp from any to me in via ix0 icmptypes 0
+00051      21605564       1778208664 allow icmp from any to me in via ix1 icmptypes 0
+00052       8791333        453333508 deny icmp from any to me in via ix0
+00052        249370         17920241 deny icmp from any to me in via ix1
+00052             0                0 deny log logamount 5000 icmp from table(68) to me in via igb0 icmptypes 5,9,10,13,15,17
+00052             0                0 deny log logamount 5000 icmp from table(68) to me in via igb1 icmptypes 5,9,10,13,15,17
+00052             0                0 deny log logamount 5000 icmp from table(68) to me in via igb2 icmptypes 5,9,10,13,15,17
+00052             0                0 deny log logamount 5000 icmp from table(68) to me in via igb3 icmptypes 5,9,10,13,15,17
+00052             0                0 deny log logamount 5000 icmp from table(68) to me in via em* icmptypes 5,9,10,13,15,17
+00053             0                0 allow icmp from table(75) to me in via ng* icmptypes 0
+00054             0                0 deny icmp from table(75) to me in via ng*
+00061           155            92663 deny icmp from any to any frag
+00061             0                0 deny gre from any to any frag
+00061             0                0 deny esp from any to any frag
+00061        109308          5192573 deny tcp from any to any frag
+00062        111659          8549924 deny log logamount 5000 ip from me to table(4)
+00062           296            13948 deny log logamount 5000 ip from table(4) to me
+00063    4183977314     281784063584 deny log logamount 5000 ip from any to any not verrevpath in
+00064             0                0 reject log logamount 5000 tcp from any to any tcpflags syn,fin,ack,psh,rst,urg
+00064             8              440 reject log logamount 5000 tcp from any to any tcpflags !syn,!fin,!ack,!psh,!rst,!urg
+00064             0                0 reject log logamount 5000 tcp from any to any not established tcpflags fin
+00065             0                0 deny log logamount 5000 ip from table(3) to any in via igb0
+00065             0                0 deny log logamount 5000 ip from table(3) to any in via igb1
+00065             0                0 deny log logamount 5000 ip from table(3) to any in via igb2
+00065             0                0 deny log logamount 5000 ip from table(3) to any in via igb3
+00065             0                0 deny log logamount 5000 ip from table(75) to any in via igb0
+00065             0                0 deny log logamount 5000 ip from table(75) to any in via igb1
+00065             0                0 deny log logamount 5000 ip from table(75) to any in via igb2
+00065             0                0 deny log logamount 5000 ip from table(75) to any in via igb3
+00066      22991152       1044304664 deny log logamount 5000 ip from any to table(5)
+00066         62001          3194701 deny log logamount 5000 ip from table(5) to any
+00070            27             1224 deny log logamount 5000 ip from not table(10) to me dst-port 9449
+00071          2960           119324 deny log logamount 5000 ip from not table(10) to me dst-port 3306
+00072          2203           163462 deny log logamount 5000 ip from not table(10) to me dst-port 161
+00072            81             4179 deny log logamount 5000 ip from not table(10) to me dst-port 162
+00073             9              372 deny log logamount 5000 ip from not table(10) to me dst-port 9418
+00074           134             7400 deny log logamount 5000 ip from not table(10) to me dst-port 5006
+00074            60             2887 deny log logamount 5000 ip from not table(10) to me dst-port 5005
+00075             3              128 deny log logamount 5000 ip from not table(10) to me dst-port 67 in recv ix0
+00075            87             5611 deny log logamount 5000 ip from not table(10) to me dst-port 67 in recv ix1
+00075             0                0 deny log logamount 5000 ip from any to me dst-port 67 { via igb5 or via igb7 }
+00075             0                0 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 123 { via igb* or via em* or via ng* }
+00076            29             1252 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 3799
+00077            46             2598 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 1812
+00077            40             2342 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 1813
+00078             2               92 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 63996
+00078             0                0 deny log logamount 5000 ip from any to me dst-port 63996 { via igb5 or via igb7 or via em* }
+00079           192             8802 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 514
+00080          8235           406992 deny log logamount 5000 ip from { not table(10) or table(11) } to me dst-port 22
+00081          1716            85784 deny log logamount 5000 ip from any to me dst-port 80,443,9443,9449
+00083           637            32282 deny log logamount 5000 ip from any to me dst-port 1701,1723
+00084         52145          3957483 deny log logamount 5000 ip from any to me dst-port 123
+00174          5153           260984 pipe 10 tcp from any to table(75) dst-port 6881 in recv ix0 tcpflags syn
+00174             0                0 pipe 10 tcp from any to table(75) dst-port 6881 in recv ix1 tcpflags syn
+00270             0                0 skipto 1010 tcp from table(60) to not table(61) dst-port 80,443,9443
+00271             0                0 skipto 300 tcp from table(60) to table(61) dst-port 80,443,9443
+00272             0                0 skipto 1999 ip from table(60) to not table(61)
+00300       3998082        283121093 netgraph 2 ip from any to 91.211.16.46 in recv ix0
+00315       7727736        559514844 allow ip from table(75) to any out xmit ix0
+00315     335730281      23440024894 allow ip from table(75) to any out xmit ix1
+00316      22695033       1247570869 allow ip from any to table(75) in recv ix0
+00316           464            20387 allow ip from any to table(75) in recv ix1
+00330            25             2508 netgraph 1 ip from table(3) to any out xmit ix0
+00400             3              480 allow tcp from table(68) to me dst-port 80,443,9443 { via igb* or via em* }
+00410             0                0 allow tcp from { table(10) or table(11) } to me dst-port 22 { via igb* or via em* or via ng* }
+00411             0                0 allow tcp from { table(10) or table(11) } to me dst-port 5006 { via igb* or via em* or via ng* }
+00450    1577371552     105047325651 allow ip from me to any
+00910             0                0 allow ip from any to any via ng*
+00932     349013445      24381196450 allow ip from table(76) to any via igb7
+00933      79188986      11897682589 allow ip from any to table(76) via igb7
+00934             0                0 allow ip from table(86) to any via igb5
+00935         46413          2447969 allow ip from any to table(86) via igb5
+01010             0                0 fwd 91.211.16.46 ip from table(60) to any
+01010             0                0 fwd 92.242.127.90 ip from table(60) to any
+01999      67224525       4502505220 deny ip from any to any
+65535          1065            75970 deny ip from any to any
+root@internet-flash:~ #

@@ -1,0 +1,688 @@
+#!/bin/sh
+
+fwcmd='/sbin/ipfw -q'
+${fwcmd} -f flush
+${fwcmd} -f pipe flush
+${fwcmd} table 3 flush
+${fwcmd} table 5 flush
+${fwcmd} table 10 flush
+${fwcmd} table 11 flush
+${fwcmd} table 59 flush
+${fwcmd} table 61 flush
+${fwcmd} table 62 flush
+${fwcmd} table 63 flush
+${fwcmd} table 68 flush
+${fwcmd} table 75 flush
+${fwcmd} table 76 flush
+${fwcmd} table 86 flush
+
+igb0if="igb0"
+igb0net="192.168.2.0"
+igb0mask="255.255.255.0"
+igb0ipL="172.22.0.1"
+igb0ip="192.168.2.232"
+
+igb1if="igb1"
+igb1net="192.168.3.0"
+igb1mask="255.255.255.0"
+igb1ipL="172.22.8.1"
+igb1ip="192.168.3.232"
+
+igb2if="igb2"
+igb2net="192.168.4.0"
+igb2mask="255.255.255.0"
+igb2ipL="172.22.16.1"
+igb2ip="192.168.4.232"
+
+igb3if="igb3"
+igb3net="31.148.63.200"
+igb3mask="255.255.255.252"
+igb3ip="31.148.63.201"
+
+igb4if="igb4"
+igb4net="31.148.63.196"
+igb4mask="255.255.255.252"
+igb4ip="31.148.63.197"
+
+igb5if="igb5"
+igb5net="192.168.7.0"
+igb5mask="255.255.255.0"
+igb5ipL="172.22.40.1"
+igb5ip="192.168.7.232"
+
+igb6if="igb6"
+igb6net="31.148.63.192"
+igb6mask="255.255.255.252"
+igb6ip="31.148.63.193"
+
+igb7if="igb7"
+igb7net="192.168.9.0"
+igb7mask="255.255.255.0"
+igb7ipL="172.22.56.1"
+igb7ip="192.168.9.232"
+
+em0if="em0"
+em0net="176.124.252.0"
+em0mask="255.255.255.252"
+em0ipL="172.22.128.1"
+em0ip="192.168.10.232"
+
+sif="ix0"
+sif2="ix1"
+snet="91.211.16.0"
+smask="255.255.255.248"
+sip="91.211.16.46"
+sgw="91.211.16.45"
+
+pif="ng*"
+pnet="10.10.0.0"
+pmask="255.255.240.0"
+pip="10.10.0.1"
+
+
+# -----------------------------temp by kos ---------------------------------------------
+# for ix1
+${fwcmd} add 2 allow ip from any to 92.242.127.89
+${fwcmd} add 2 allow ip from 92.242.127.89 to any
+# nas02 ip interface
+${fwcmd} add 3 allow ip from any to 176.124.15.251
+${fwcmd} add 3 allow ip from 176.124.15.251 to any
+${fwcmd} add 3 allow ip from any to 172.17.192.254
+${fwcmd} add 3 allow ip from 172.17.192.254 to any
+${fwcmd} add 3 allow ip from any to 172.17.192.101/30
+${fwcmd} add 3 allow ip from 172.17.192.101/30 to any
+${fwcmd} add 3 allow ip from any to 172.17.192.201/30
+${fwcmd} add 3 allow ip from 172.17.192.201/30 to any
+# nas02 ip pool
+#${fwcmd} add 3 allow ip from 31.148.60.0/24 to any
+#${fwcmd} add 3 allow ip from any to 31.148.60.0/24
+# nas03 ip interface
+${fwcmd} add 3 allow ip from any to 31.148.63.206
+${fwcmd} add 3 allow ip from 31.148.63.206 to any
+# nas03 ip pool
+${fwcmd} add 3 allow ip from 31.148.60.0/24 to any
+${fwcmd} add 3 allow ip from any to 31.148.60.0/24
+# nas06 ip interface
+${fwcmd} add 3 allow ip from any to 31.148.63.194
+${fwcmd} add 3 allow ip from 31.148.63.194 to any
+# nas06 ip pool
+${fwcmd} add 3 allow ip from 31.148.63.0/25 to any
+${fwcmd} add 3 allow ip from any to 31.148.63.0/25
+${fwcmd} add 3 allow ip from 31.148.62.0/24 to any
+${fwcmd} add 3 allow ip from any to 31.148.62.0/24
+# nas07 ip interface
+${fwcmd} add 3 allow ip from any to 31.148.63.198
+${fwcmd} add 3 allow ip from 31.148.63.198 to any
+# nas07 ip pool
+${fwcmd} add 3 allow ip from 31.148.55.0/24 to any
+${fwcmd} add 3 allow ip from any to 31.148.55.0/24
+# nas08 ip interface
+${fwcmd} add 3 allow ip from any to 31.148.63.202
+${fwcmd} add 3 allow ip from 31.148.63.202 to any
+# nas08 ip pool
+${fwcmd} add 3 allow ip from 31.148.62.0/24 to any
+${fwcmd} add 3 allow ip from any to 31.148.62.0/24
+# all nases
+${fwcmd} add 3 allow ip from 31.148.52.0/22 to any
+${fwcmd} add 3 allow ip from any to 31.148.52.0/22
+${fwcmd} add 3 allow ip from 31.148.56.0/21 to any
+${fwcmd} add 3 allow ip from any to 31.148.56.0/21
+${fwcmd} add 3 allow ip from 95.47.204.0/22 to any
+${fwcmd} add 3 allow ip from any to 95.47.204.0/22
+# DMZ
+${fwcmd} add 8 allow ip from any to 31.148.63.224/27
+${fwcmd} add 8 allow ip from 31.148.63.224/27 to any
+
+
+# Manage (Admins net)
+${fwcmd} add 4 allow ip from any to 192.168.128.0/24
+${fwcmd} add 4 allow ip from 192.168.128.0/24 to any
+
+
+# TurboSMS
+${fwcmd} add 13 allow ip from any to 94.249.146.189
+${fwcmd} add 13 allow ip from 94.249.146.189 to any
+
+# DNS, www, https
+${fwcmd} 21 add allow ip from any to any dst-port 53
+${fwcmd} 21 add allow ip from any to any src-port 53
+${fwcmd} 20 add allow ip from any to me dst-port 80,443 in recv ix0
+${fwcmd} 20 add allow ip from any to me dst-port 80,443 in recv ix1
+
+${fwcmd} add 2 allow ip from any to 94.249.146.189
+${fwcmd} add 2 allow ip from 94.249.146.189 to any
+
+# For ntpdate
+${fwcmd} add 3 allow ip from any to me src-port 123
+# ----------------------------end of temp by kos --------------------------------------
+
+${fwcmd} table 3 add 10.10.0.0/21
+${fwcmd} table 3 add 10.10.12.0/22
+${fwcmd} table 3 add 10.10.80.0/21
+
+${fwcmd} table 75 add 176.124.8.0/21
+${fwcmd} table 75 add 31.148.52.0/22
+${fwcmd} table 75 add 31.148.56.0/21
+${fwcmd} table 75 add 95.47.204.0/22
+
+${fwcmd} table 76 add 31.148.63.128/26
+${fwcmd} table 76 add 31.148.56.0/24
+${fwcmd} table 76 add 31.148.57.0/24
+${fwcmd} table 76 add 31.148.58.0/24
+
+${fwcmd} table 86 add 31.148.59.0/24
+${fwcmd} table 86 add 31.148.60.0/24
+${fwcmd} table 86 add 31.148.61.0/24
+
+# ============ DMZ net's ==============
+${fwcmd} table 10 add 92.242.127.89
+${fwcmd} table 10 add 127.0.0.1
+#${fwcmd} table 10 add 10.10.80.11
+#${fwcmd} table 10 add 31.133.57.224/27
+# ${fwcmd} table 10 add 31.133.57.227
+# ${fwcmd} table 10 add 31.133.57.228
+# ${fwcmd} table 10 add 31.133.57.230
+#${fwcmd} table 10 add 172.22.0.10
+#${fwcmd} table 10 add 172.22.0.23
+#${fwcmd} table 10 add 95.134.111.219
+#${fwcmd} table 10 add 176.124.8.4
+#${fwcmd} table 10 add 176.124.8.25
+${fwcmd} table 10 add 31.148.63.194
+${fwcmd} table 10 add 31.148.63.198
+${fwcmd} table 10 add 31.148.63.230
+${fwcmd} table 10 add 31.148.63.202
+${fwcmd} table 10 add 31.148.63.206
+${fwcmd} table 10 add 176.124.15.251
+#${fwcmd} table 10 add 37.57.97.131/32
+${fwcmd} table 10 add 172.17.192.254
+${fwcmd} table 10 add 172.17.192.102
+${fwcmd} table 10 add 172.17.192.202
+
+${fwcmd} table 11 add 92.242.127.90
+${fwcmd} table 11 add 127.0.0.1
+${fwcmd} table 11 add 91.211.16.46
+#${fwcmd} table 11 add 176.124.13.254
+${fwcmd} table 11 add 176.124.15.253
+#${fwcmd} table 11 add 31.133.57.240
+${fwcmd} table 11 add 31.148.63.193
+${fwcmd} table 11 add 31.148.63.197
+${fwcmd} table 11 add 31.148.63.201
+${fwcmd} table 11 add 31.148.63.205
+${fwcmd} table 11 add 172.17.192.101
+${fwcmd} table 11 add 172.17.192.201
+# =====================================
+
+${fwcmd} add 10 allow all from any to any via lo0
+${fwcmd} add 11 allow all from 'table(11)' to me
+${fwcmd} add 12 allow all from 'table(10)' to me 22
+
+# =================== To other NAS servers ===============================
+${fwcmd} add 14 skipto 934 all from 'table(86)' to any in recv igb5
+${fwcmd} add 15 skipto 935 all from any to 'table(86)' out xmit igb5
+${fwcmd} add 16 skipto 932 all from 'table(76)' to any in recv igb7
+${fwcmd} add 17 skipto 933 all from any to 'table(76)' out xmit igb7
+# ------------------------------------------------------------------------
+
+${fwcmd} add 39 allow all from 'table(10)' to me 161,162
+${fwcmd} add 40 allow icmp from 'table(10)' to me
+${fwcmd} add 41 allow icmp from 'table(62)' to me in recv ${sif}
+${fwcmd} add 41 allow icmp from 'table(15)' to me in recv ${sif}
+${fwcmd} add 41 allow icmp from 'table(62)' to me in recv ${sif2}
+${fwcmd} add 41 allow icmp from 'table(15)' to me in recv ${sif2}
+${fwcmd} add 42 allow all from 'table(10)' to me 1701,1723
+${fwcmd} add 43 allow all from 'table(10)' to me 80,443,9443,9449
+${fwcmd} add 44 allow all from 'table(62)' to me 80,443,9443 in recv ${sif}
+${fwcmd} add 44 allow all from 'table(15)' to me 80,443,9443 in recv ${sif}
+${fwcmd} add 47 skipto 180 all from 'table(61)' to me 80,443,9443 in recv ${sif}
+${fwcmd} add 44 allow all from 'table(62)' to me 80,443,9443 in recv ${sif2}
+${fwcmd} add 44 allow all from 'table(15)' to me 80,443,9443 in recv ${sif2}
+${fwcmd} add 47 skipto 180 all from 'table(61)' to me 80,443,9443 in recv ${sif2}
+${fwcmd} add 47 skipto 180 tcp from 'table(75)' to me 80,443,9443 in via ng*
+${fwcmd} add 47 skipto 180 tcp from 'table(3)' to me 80,443,9443 in via ng*
+${fwcmd} add 47 skipto 180 tcp from 'table(68)' to me 80,443,9443 { via igb* or via em* }
+${fwcmd} add 48 skipto 180 all from 'table(68)' to me 1701,1723 { via igb* or via em* }
+${fwcmd} add 49 allow all from 'table(63)' to me 123 in recv ${sif}
+${fwcmd} add 49 allow all from 'table(63)' to me 123 in recv ${sif2}
+####### ================================= DENY & COUNT ====================================================================================================
+${fwcmd} add 50 deny all from any to 127.0.0.0/8
+${fwcmd} add 50 deny all from 127.0.0.0/8 to any
+${fwcmd} add 51 allow icmp from any to me in via ${sif} icmptypes 0
+${fwcmd} add 51 allow icmp from any to me in via ${sif2} icmptypes 0
+${fwcmd} add 52 deny icmp from any to me in via ${sif}
+${fwcmd} add 52 deny icmp from any to me in via ${sif2}
+${fwcmd} add 52 deny log icmp from 'table(68)' to me in via igb0 icmptypes 5,9,10,13,15,17
+${fwcmd} add 52 deny log icmp from 'table(68)' to me in via igb1 icmptypes 5,9,10,13,15,17
+${fwcmd} add 52 deny log icmp from 'table(68)' to me in via igb2 icmptypes 5,9,10,13,15,17
+${fwcmd} add 52 deny log icmp from 'table(68)' to me in via igb3 icmptypes 5,9,10,13,15,17
+#${fwcmd} add 52 deny log icmp from 'table(68)' to me in via igb4 icmptypes 5,9,10,13,15,17
+#${fwcmd} add 52 deny log icmp from 'table(68)' to me in via igb6 icmptypes 5,9,10,13,15,17
+${fwcmd} add 52 deny log icmp from 'table(68)' to me in via em* icmptypes 5,9,10,13,15,17
+${fwcmd} add 53 allow icmp from 'table(75)' to me in via ng* icmptypes 0
+${fwcmd} add 54 deny icmp from 'table(75)' to me in via ng*
+${fwcmd} add 61 deny icmp from any to any frag
+${fwcmd} add 61 deny gre from any to any frag
+${fwcmd} add 61 deny esp from any to any frag
+${fwcmd} add 61 deny tcp from any to any frag
+${fwcmd} add 62 deny log all from me to 'table(4)'
+${fwcmd} add 62 deny log all from 'table(4)' to me
+${fwcmd} add 63 deny log ip from any to any not verrevpath in
+${fwcmd} add 64 reject log tcp from any to any tcpflags syn,fin,ack,psh,rst,urg
+${fwcmd} add 64 reject log tcp from any to any tcpflags !syn,!fin,!ack,!psh,!rst,!urg
+${fwcmd} add 64 reject log tcp from any to any not established tcpflags fin
+${fwcmd} add 65 deny log all from 'table(3)' to any in via igb0
+${fwcmd} add 65 deny log all from 'table(3)' to any in via igb1
+${fwcmd} add 65 deny log all from 'table(3)' to any in via igb2
+${fwcmd} add 65 deny log all from 'table(3)' to any in via igb3
+#${fwcmd} add 65 deny log all from 'table(3)' to any in via igb4
+#${fwcmd} add 65 deny log all from 'table(3)' to any in via igb6
+${fwcmd} add 65 deny log all from 'table(75)' to any in via igb0
+${fwcmd} add 65 deny log all from 'table(75)' to any in via igb1
+${fwcmd} add 65 deny log all from 'table(75)' to any in via igb2
+${fwcmd} add 65 deny log all from 'table(75)' to any in via igb3
+#${fwcmd} add 65 deny log all from 'table(75)' to any in via igb4
+#${fwcmd} add 65 deny log all from 'table(75)' to any in via igb6
+${fwcmd} add 66 deny log all from any to 'table(5)'
+${fwcmd} add 66 deny log all from 'table(5)' to any
+
+${fwcmd} add 70 deny log all from not 'table(10)' to me dst-port 9449                                   #www        httpd       tcp4   *:9449
+${fwcmd} add 71 deny log all from not 'table(10)' to me dst-port 3306                                   #mysql      mysqld      tcp4   *:3306
+${fwcmd} add 72 deny log all from not 'table(10)' to me dst-port 161                                    #root       bsnmpd      udp4   *:161
+${fwcmd} add 72 deny log all from not 'table(10)' to me dst-port 162                                    #root       bsnmpd
+${fwcmd} add 73 deny log all from not 'table(10)' to me dst-port 9418                                   #git_daemon git-daemon  tcp4   *:9418
+${fwcmd} add 74 deny log all from not 'table(10)' to me dst-port 5006                                   #root       mpd5        tcp4   *:5006
+${fwcmd} add 74 deny log all from not 'table(10)' to me dst-port 5005                                   #root       mpd5        tcp4   127.0.0.1:5005
+${fwcmd} add 75 deny log all from not 'table(10)' to me dst-port 67 in recv ${sif}                      #dhcpd      dhcpd       udp4   *:67
+${fwcmd} add 75 deny log all from not 'table(10)' to me dst-port 67 in recv ${sif2}                     #dhcpd      dhcpd       udp4   *:67
+${fwcmd} add 75 deny log all from any to me dst-port 67 { via igb5 or via igb7 }                        #dhcpd      dhcpd       udp4   *:67
+${fwcmd} add 75 deny log all from { not 'table(10)' or 'table(11)' } to me dst-port 123 { via igb* or via em* or via ng* }              #root       ntpd        udp4   *:123
+
+${fwcmd} add 76 deny log all from { not 'table(10)' or 'table(11)' } to me dst-port 3799                #root       mpd5        udp4   127.0.0.1:3799
+${fwcmd} add 77 deny log all from { not 'table(10)' or 'table(11)' } to me dst-port 1812                #freeradius radiusd     udp4   *:1812
+${fwcmd} add 77 deny log all from { not 'table(10)' or 'table(11)' } to me dst-port 1813                #freeradius radiusd     udp4   *:1813
+${fwcmd} add 78 deny log all from { not 'table(10)' or 'table(11)' } to me dst-port 63996               #dhcpd      dhcpd       udp4   *:63996
+${fwcmd} add 78 deny log all from any to me dst-port 63996 { via igb5 or via igb7 or via em* }          #dhcpd      dhcpd       udp4   *:63996
+${fwcmd} add 79 deny log all from { not 'table(10)' or 'table(11)' } to me dst-port 514                 #root       syslogd     udp4   *:514
+${fwcmd} add 80 deny log all from { not 'table(10)' or 'table(11)' } to me dst-port 22                  #root       sshd        tcp4   *:22
+${fwcmd} add 81 deny log all from any to me dst-port 80,443,9443,9449                                   #www        httpd       tcp4   *:80   *:443   *:9443   *:9449
+${fwcmd} add 83 deny log all from any to me dst-port 1701,1723                                          #root       ppptp       tcp4   *:1701   *:1723
+${fwcmd} add 84 deny log all from any to me dst-port 123                                                #root       ntpd        udp4   *:123
+
+${fwcmd} pipe 10 config bw 10Kbit/s queue 2 mask dst-ip 0xffffffff
+${fwcmd} add 174 pipe 10 tcp from any to 'table(75)' dst-port 6881 in recv ${sif} tcpflags syn          #DHT
+${fwcmd} add 174 pipe 10 tcp from any to 'table(75)' dst-port 6881 in recv ${sif2} tcpflags syn         #DHT
+${fwcmd} pipe 11 config bw 10Kbit/s queue 2 mask dst-ip 0xffffffff dst-port 0xffff buckets 65536
+#${fwcmd} add 175 pipe 11 tcp from any to me in recv ${sif} tcpflags syn                                        #Syn-Flood
+#
+#${fwcmd} add 180 count log tcp from any to me dst-port 1723 setup limit src-addr 50 in recv ${sif}     #root       mpd5        tcp4   *:1723
+#${fwcmd} add 180 count log udp from any to me dst-port 1701 limit src-addr 50 in recv ${sif}           #root       mpd5        udp4   *:1701
+#${fwcmd} add 181 count log udp from any to me dst-port 123 limit src-addr 20 in recv ${sif}            #root       ntpd        udp4   *:123
+#${fwcmd} add 182 count log tcp from any to me dst-port 22 setup limit src-addr 30                      #root       sshd        tcp4   *:22
+#
+#${fwcmd} add 183 count log tcp from any to me dst-port 80 limit dst-addr 100 in recv ${sif}            #www        httpd       tcp4   *:80
+#${fwcmd} add 183 count log tcp from any to me dst-port 80 setup limit dst-addr 30 in recv ng*          #www        httpd       tcp4   *:80
+#${fwcmd} add 183 count log tcp from any to me dst-port 80 setup limit dst-addr 30 in recv igb0         #www        httpd       tcp4   *:80
+#${fwcmd} add 183 count log tcp from any to me dst-port 80 setup limit dst-addr 30 in recv igb1         #www        httpd       tcp4   *:80
+#${fwcmd} add 183 count log tcp from any to me dst-port 80 setup limit dst-addr 30 in recv igb2         #www        httpd       tcp4   *:80
+#${fwcmd} add 183 count log tcp from any to me dst-port 80 setup limit dst-addr 30 in recv igb3         #www        httpd       tcp4   *:80
+#${fwcmd} add 183 count log tcp from any to me dst-port 80 setup limit dst-addr 30 in recv igb4         #www        httpd       tcp4   *:80
+#${fwcmd} add 183 count log tcp from any to me dst-port 80 setup limit dst-addr 30 in recv igb6         #www        httpd       tcp4   *:80
+#${fwcmd} add 184 count log tcp from any to me dst-port 443 setup limit dst-addr 100 in recv ${sif}     #www        httpd       tcp4   *:443
+#${fwcmd} add 184 count log tcp from any to me dst-port 443 setup limit dst-addr 30 in recv ng*         #www        httpd       tcp4   *:443
+#${fwcmd} add 184 count log tcp from any to me dst-port 443 setup limit dst-addr 30 in recv igb0                #www        httpd       tcp4   *:443
+#${fwcmd} add 184 count log tcp from any to me dst-port 443 setup limit dst-addr 30 in recv igb1                #www        httpd       tcp4   *:443
+#${fwcmd} add 184 count log tcp from any to me dst-port 443 setup limit dst-addr 30 in recv igb2                #www        httpd       tcp4   *:443
+#${fwcmd} add 184 count log tcp from any to me dst-port 443 setup limit dst-addr 30 in recv igb3                #www        httpd       tcp4   *:443
+#${fwcmd} add 184 count log tcp from any to me dst-port 443 setup limit dst-addr 30 in recv igb4                #www        httpd       tcp4   *:443
+#${fwcmd} add 184 count log tcp from any to me dst-port 443 setup limit dst-addr 30 in recv igb6                #www        httpd       tcp4   *:443
+#${fwcmd} add 185 count log tcp from any to me dst-port 9443 setup limit dst-addr 100 in recv ${sif}    #www        httpd       tcp4   *:9443
+#${fwcmd} add 185 count log tcp from any to me dst-port 9443 setup limit dst-addr 50 in recv ng*                #www        httpd       tcp4   *:9443
+#${fwcmd} add 185 count log tcp from any to me dst-port 9443 setup limit dst-addr 30 in recv igb0               #www        httpd       tcp4   *:9443
+#${fwcmd} add 185 count log tcp from any to me dst-port 9443 setup limit dst-addr 30 in recv igb1               #www        httpd       tcp4   *:9443
+#${fwcmd} add 185 count log tcp from any to me dst-port 9443 setup limit dst-addr 30 in recv igb2               #www        httpd       tcp4   *:9443
+#${fwcmd} add 185 count log tcp from any to me dst-port 9443 setup limit dst-addr 30 in recv igb3               #www        httpd       tcp4   *:9443
+#${fwcmd} add 185 count log tcp from any to me dst-port 9443 setup limit dst-addr 30 in recv igb4               #www        httpd       tcp4   *:9443
+#${fwcmd} add 185 count log tcp from any to me dst-port 9443 setup limit dst-addr 30 in recv igb6               #www        httpd       tcp4   *:9443
+# ${fwcmd} add 90 count log all from any to me dst-port 6881 limit dst-addr 20 in recv ${sif}           #ddos
+#${fwcmd} add 190 count log all from any to me dst-port 6882-6889 limit dst-addr 200 in recv ${sif}     #ddos
+#${fwcmd} add 190 count log all from any to me dst-port 6969 limit dst-addr 200 in recv ${sif}          #ddos
+#${fwcmd} add 190 count log all from any to me dst-port 8080 in limit dst-addr 200 recv ${sif}          #ddos
+####### ======================================================================================================================================================
+
+### ===================== Redirect from "no money" clients ============
+${fwcmd} add 270 skipto 1010 tcp from 'table(60)' to not 'table(61)' dst-port 80,443,9443
+${fwcmd} add 271 skipto 300 tcp from 'table(60)' to 'table(61)' dst-port 80,443,9443
+${fwcmd} add 272 skipto 1999 ip from 'table(60)' to not 'table(61)'
+### ===================================================================
+
+${fwcmd} nat 100 config ip ${sip} \
+                        log \
+                        same_ports \
+                        unreg_only \
+                        redirect_port tcp 172.22.0.3:5038 50380 \
+                        redirect_port tcp 172.22.0.3:443 50384 \
+                        redirect_port udp 172.22.0.3:10000-20000 10000-20000 \
+                        redirect_port tcp 172.22.0.16:22 21122
+
+##### ================== NAT =============================================================
+${fwcmd} add 300 netgraph 2 all from any to ${sip} in recv ${sif}
+#${fwcmd} add 301 nat 100 all from any to ${sip} in recv ${sif}
+### -------------------- Dinamic NAT -----------------------------------------
+#${fwcmd} add 305 skipto 330 tcp from 'table(3)' to any setup limit src-addr 300
+## --------------------- net.inet.ip.fw.one_pass: 1 ------------------
+${fwcmd} add 315 allow all from 'table(75)' to any out xmit ${sif}
+${fwcmd} add 316 allow all from any to 'table(75)' in recv ${sif}
+${fwcmd} add 315 allow all from 'table(75)' to any out xmit ${sif2}
+${fwcmd} add 316 allow all from any to 'table(75)' in recv ${sif2}
+## -------------------------------------------------------------------
+${fwcmd} add 330 netgraph 1 all from 'table(3)' to any out xmit ${sif}
+#${fwcmd} add 331 nat 100 all from 'table(3)' to any out xmit ${sif}
+# ========================================================================================
+
+${fwcmd} add 400 allow tcp from 'table(68)' to me dst-port 80,443,9443 { via igb* or via em* }
+${fwcmd} add 402 allow tcp from 'table(68)' to me dst-port 1701,1723 { via igb* or em* }
+${fwcmd} add 403 allow udp from 'table(68)' to me dst-port 1701,1723 { via igb* or em* }
+${fwcmd} add 410 allow tcp from { 'table(10)' or 'table(11)' } to me dst-port 22 { via igb* or via em* or via ng* }
+${fwcmd} add 411 allow tcp from { 'table(10)' or 'table(11)' } to me dst-port 5006 { via igb* or via em* or via ng* }
+${fwcmd} add 450 allow all from me to any
+
+${fwcmd} add 910 allow all from any to any via ng*
+
+${fwcmd} add 932 allow all from 'table(76)' to any via igb7
+${fwcmd} add 933 allow all from any to 'table(76)' via igb7
+${fwcmd} add 934 allow all from 'table(86)' to any via igb5
+${fwcmd} add 935 allow all from any to 'table(86)' via igb5
+
+${fwcmd} add 1010 fwd 91.211.16.46 all from 'table(60)' to any
+${fwcmd} add 1010 fwd 92.242.127.90 all from 'table(60)' to any
+
+${fwcmd} add 1999 deny all from any to any
+
+${fwcmd} table 60 add 10.10.0.1
+
+${fwcmd} table 61 add 91.211.16.46
+${fwcmd} table 61 add 92.242.127.90
+${fwcmd} table 61 add 10.10.0.1
+${fwcmd} table 61 add 185.18.52.0/22    # hostnl2.fornex.org [ 185.18.52.113 ] + ns3.fornex.com [ 185.18.52.31 ]
+${fwcmd} table 61 add 37.59.133.13      # ns1.fornex.com
+${fwcmd} table 61 add 212.224.124.82    # ns2.fornex.com
+${fwcmd} table 61 add 88.150.208.146    # ns4.fornex.com
+# Name server's
+${fwcmd} table 61 add 91.211.16.6       # ns2.didan.net.ua
+${fwcmd} table 61 add 91.211.16.1       # ns.didan.net.ua
+${fwcmd} table 61 add 8.8.4.4           # google.com
+${fwcmd} table 61 add 8.8.8.8           # google.com
+${fwcmd} table 61 add 216.239.34.10     # ns2.google.com
+${fwcmd} table 61 add 216.239.36.10     # ns3.google.com
+${fwcmd} table 61 add 216.239.32.10     # ns1.google.com
+${fwcmd} table 61 add 216.239.38.10     # ns4.google.com
+${fwcmd} table 61 add 128.30.52.37      # www.w3.org
+${fwcmd} table 61 add 198.41.0.4        # a.root-servers.com
+# Privat24.ua
+${fwcmd} table 61 add 23.43.128.0/20
+${fwcmd} table 61 add 52.0.0.0/11       # { Privat24.ua
+${fwcmd} table 61 add 52.16.87.0
+${fwcmd} table 61 add 54.72.0.0/13
+${fwcmd} table 61 add 54.72.6.76
+${fwcmd} table 61 add 54.72.181.151
+${fwcmd} table 61 add 54.72.190.80
+${fwcmd} table 61 add 54.72.226.178
+${fwcmd} table 61 add 54.76.131.126
+${fwcmd} table 61 add 54.76.186.242
+${fwcmd} table 61 add 54.77.0.0/16
+${fwcmd} table 61 add 54.194.165.74
+${fwcmd} table 61 add 54.194.215.96
+${fwcmd} table 61 add 54.80.0.0/12
+${fwcmd} table 61 add 54.192.0.0/12
+${fwcmd} table 61 add 54.228.0.0/15     # LiqPAY - 54.229.105.178  54.229.105.179  75.101.163.115  107.22.173.15  107.22.173.86
+${fwcmd} table 61 add 54.240.0.0/12
+${fwcmd} table 61 add 54.246.213.4      # }
+${fwcmd} table 61 add 64.233.160.0/19
+${fwcmd} table 61 add 74.125.0.0/16
+${fwcmd} table 61 add 75.101.163.115
+${fwcmd} table 61 add 91.194.250.0/23
+${fwcmd} table 61 add 94.31.29.0/24
+${fwcmd} table 61 add 107.22.173.15
+${fwcmd} table 61 add 107.22.173.86
+${fwcmd} table 61 add 108.161.176.0/20
+${fwcmd} table 61 add 134.170.0.0/16    # Microsoft
+#${fwcmd} table 61 add 173.194.0.0/16   # { google - e100 - 173.194.32.192 - 173.194.39.31
+${fwcmd} table 61 add 173.194.32.192/26
+${fwcmd} table 61 add 173.194.33.0/24
+${fwcmd} table 61 add 173.194.34.0/23
+${fwcmd} table 61 add 173.194.36.0/23
+${fwcmd} table 61 add 173.194.38.0/24
+${fwcmd} table 61 add 173.194.39.0/27   # }
+${fwcmd} table 61 add 204.79.195.0/24
+${fwcmd} table 61 add 204.79.196.0/23
+${fwcmd} table 61 add 205.251.192.116   # NS  ns-116.awsdns-14.com [ liqpay.com ]
+${fwcmd} table 61 add 205.251.195.45    # NS  ns-813.awsdns-37.net [ liqpay.com ]
+${fwcmd} table 61 add 205.251.196.160   # NS  ns-1184.awsdns-20.org [ liqpay.com ]
+${fwcmd} table 61 add 205.251.199.129   # NS  ns-1921.awsdns-48.co.uk [ liqpay.com ]
+${fwcmd} table 61 add 213.155.128.0/19
+${fwcmd} table 61 add 216.58.192.0/19
+${fwcmd} table 61 add 217.117.64.0/24   # privatbank.ua
+${fwcmd} table 61 add 217.117.65.0/24   # privatbank.ua
+# city-pay.com.ua
+${fwcmd} table 61 add 91.105.201.31     # lc.city-pay.com.ua A
+${fwcmd} table 61 add 89.184.72.89      # atlant2.mirohost.net
+${fwcmd} table 61 add 89.184.72.99      # city-pay.com.ua A
+${fwcmd} table 61 add 78.30.232.5       # mail.city-pay.com.ua A
+# Paysys system's
+${fwcmd} table 61 add 62.149.12.0/23    # bnk24.com.ua [ bnk.ua ]
+${fwcmd} table 61 add 195.10.218.120
+${fwcmd} table 61 add 78.30.232.14
+${fwcmd} table 61 add 77.120.96.58
+${fwcmd} table 61 add 78.111.212.184
+# Turbosms
+${fwcmd} table 61 add 94.249.146.189    # MySQL server turbosms.ua
+${fwcmd} table 61 add 94.249.146.185    # turbosms.ua
+${fwcmd} table 61 add 80.81.242.171     # mail.turbosms.ua A
+# Counter's
+${fwcmd} table 61 add 88.212.196.64/26  # counter.yadro.ru A1
+${fwcmd} table 61 add 88.212.201.192/26 # counter.yadro.ru A2
+${fwcmd} table 61 add 217.69.133.154    # top.mail.ru
+${fwcmd} table 61 add 94.100.180.180    # emx.mail.ru
+${fwcmd} table 61 add 217.69.139.180    # emx.mail.ru
+${fwcmd} table 61 add 217.69.139.112    # ns1.mail.ru
+${fwcmd} table 61 add 94.100.180.138    # ns2.mail.ru
+${fwcmd} table 61 add 217.69.133.145    # top-fwz1.mail.ru
+# Others
+${fwcmd} table 61 add 216.58.218.170    # ajax.googleapis.com [ googleapis.l.google.com ]
+${fwcmd} table 61 add 173.194.115.0/28  # play.google.com [ play.l.google.com ]
+
+### ======== Pay Services ==============
+${fwcmd} table 62 add 54.80.0.0/12
+${fwcmd} table 62 add 54.72.0.0/13
+${fwcmd} table 62 add 54.76.91.175
+${fwcmd} table 62 add 217.117.64.232/29
+${fwcmd} table 62 add 212.111.95.87
+${fwcmd} table 62 add 195.85.198.15
+${fwcmd} table 62 add 195.85.198.136
+${fwcmd} table 62 add 185.46.150.122
+${fwcmd} table 62 add 213.160.154.26
+${fwcmd} table 62 add 185.46.148.218
+${fwcmd} table 62 add 213.160.149.0/24
+${fwcmd} table 62 add 91.194.189.69
+${fwcmd} table 62 add 78.140.166.69
+${fwcmd} table 62 add 77.109.141.170
+${fwcmd} table 62 add 85.192.45.0/24
+${fwcmd} table 62 add 194.67.81.0/24
+${fwcmd} table 62 add 91.142.251.0/24
+${fwcmd} table 62 add 89.111.54.0/24
+${fwcmd} table 62 add 95.163.74.0/24
+${fwcmd} table 62 add 107.22.173.15
+${fwcmd} table 62 add 107.22.173.86
+${fwcmd} table 62 add 217.117.64.232/28
+${fwcmd} table 62 add 75.101.163.115
+${fwcmd} table 62 add 213.154.214.76
+${fwcmd} table 62 add 62.89.31.36
+${fwcmd} table 62 add 95.140.194.139
+${fwcmd} table 62 add 195.76.9.187
+${fwcmd} table 62 add 195.76.9.222
+${fwcmd} table 62 add 217.77.49.157
+${fwcmd} table 62 add 77.73.26.162
+${fwcmd} table 62 add 77.73.26.163
+${fwcmd} table 62 add 77.73.26.164
+${fwcmd} table 62 add 217.73.198.66
+${fwcmd} table 62 add 193.110.17.230
+${fwcmd} table 62 add 77.222.134.205
+${fwcmd} table 62 add 62.149.15.210
+${fwcmd} table 62 add 62.149.8.166
+${fwcmd} table 62 add 82.207.125.57
+${fwcmd} table 62 add 213.230.106.112/28
+${fwcmd} table 62 add 213.230.65.85/28
+${fwcmd} table 62 add 93.183.196.26
+${fwcmd} table 62 add 195.230.131.50
+${fwcmd} table 62 add 93.183.196.28
+${fwcmd} table 62 add 77.120.97.36
+${fwcmd} table 62 add 87.248.226.170
+${fwcmd} table 62 add 217.195.80.50
+${fwcmd} table 62 add 217.117.64.238/32
+${fwcmd} table 62 add 176.9.53.221
+${fwcmd} table 62 add 91.230.25.123
+# 217.117.64.0/22   54.229.105.178/32   54.229.105.179/32   54.154.124.100/32   54.154.124.224/32
+${fwcmd} table 62 add 54.229.105.178
+${fwcmd} table 62 add 54.229.105.179
+${fwcmd} table 62 add 217.117.64.0/22
+${fwcmd} table 62 add 54.154.124.100
+${fwcmd} table 62 add 54.154.124.224
+${fwcmd} table 62 add 92.125.0.0/24
+${fwcmd} table 62 add 79.142.16.0/21
+${fwcmd} table 62 add 77.222.138.142
+${fwcmd} table 62 add 78.30.232.14
+${fwcmd} table 62 add 77.120.96.58
+${fwcmd} table 62 add 91.105.201.0/24
+### =====================================
+
+### ================ ntpd ===============
+${fwcmd} table 63 add 82.193.117.90                             #0.ua.pool.ntp.org.      150     IN      A
+${fwcmd} table 63 add 195.20.96.8
+${fwcmd} table 63 add 91.236.251.12
+${fwcmd} table 63 add 91.218.89.74
+${fwcmd} table 63 add 194.54.80.28                              #1.ua.pool.ntp.org.      150     IN      A
+${fwcmd} table 63 add 194.54.80.29
+${fwcmd} table 63 add 79.142.192.4
+${fwcmd} table 63 add 93.157.10.210
+${fwcmd} table 63 add 195.138.69.242                            #2.ua.pool.ntp.org.      149     IN      A
+${fwcmd} table 63 add 62.149.0.30
+${fwcmd} table 63 add 91.198.10.1                               #3.ua.pool.ntp.org.      150     IN      A
+${fwcmd} table 63 add 31.28.161.68
+${fwcmd} table 63 add 91.236.251.5
+### =====================================
+
+${fwcmd} table 59 add 172.22.0.2/31
+${fwcmd} table 59 add 172.22.0.4/30
+${fwcmd} table 59 add 172.22.0.8/31
+${fwcmd} table 59 add 172.22.0.10/31
+${fwcmd} table 59 add 172.22.0.12/30
+${fwcmd} table 59 add 172.22.0.16/32
+${fwcmd} table 59 add 172.22.0.29
+${fwcmd} table 59 add 172.22.0.30
+
+${fwcmd} table 68 add 172.22.0.0/21
+${fwcmd} table 68 add 172.22.8.0/21
+${fwcmd} table 68 add 172.22.16.0/21
+${fwcmd} table 68 add 172.22.24.0/21
+${fwcmd} table 68 add 172.22.32.0/21
+${fwcmd} table 68 add 172.22.40.0/21
+${fwcmd} table 68 add 172.22.48.0/21
+${fwcmd} table 68 add 172.22.56.0/21
+${fwcmd} table 68 add 172.22.64.0/21
+${fwcmd} table 68 add 172.22.72.0/21
+${fwcmd} table 68 add 172.22.80.0/21
+${fwcmd} table 68 add 172.22.96.0/21
+${fwcmd} table 68 add 172.22.104.0/21
+${fwcmd} table 68 add 172.22.112.0/21
+${fwcmd} table 68 add 172.22.120.0/21
+
+########### TABLE   5   ####################
+#
+${fwcmd} table 5 add 0.0.0.0/8
+${fwcmd} table 5 add 10.0.0.0/13
+${fwcmd} table 5 add 10.8.0.0/15
+${fwcmd} table 5 add 10.10.16.0/20
+${fwcmd} table 5 add 10.10.32.0/19
+${fwcmd} table 5 add 10.10.64.0/20
+${fwcmd} table 5 add 10.10.88.0/21
+${fwcmd} table 5 add 10.10.96.0/19
+${fwcmd} table 5 add 10.10.128.0/17
+${fwcmd} table 5 add 10.11.0.0/16
+${fwcmd} table 5 add 10.12.0.0/14
+${fwcmd} table 5 add 10.16.0.0/12
+${fwcmd} table 5 add 10.32.0.0/11
+${fwcmd} table 5 add 10.64.0.0/10
+${fwcmd} table 5 add 10.128.0.0/9
+${fwcmd} table 5 add 172.16.0.0/14
+${fwcmd} table 5 add 172.20.0.0/15
+${fwcmd} table 5 add 172.22.72.0/21
+${fwcmd} table 5 add 172.22.80.0/21
+${fwcmd} table 5 add 172.22.88.0/21
+${fwcmd} table 5 add 172.22.96.0/19
+${fwcmd} table 5 add 172.22.128.0/17
+${fwcmd} table 5 add 172.23.0.1/32
+${fwcmd} table 5 add 172.23.0.2/31
+${fwcmd} table 5 add 172.23.0.4/30
+${fwcmd} table 5 add 172.23.0.8/29
+${fwcmd} table 5 add 172.23.0.16/28
+${fwcmd} table 5 add 172.23.0.32/27
+${fwcmd} table 5 add 172.23.0.64/26
+${fwcmd} table 5 add 172.23.0.128/25
+${fwcmd} table 5 add 172.23.1.0/24
+${fwcmd} table 5 add 172.23.2.0/23
+${fwcmd} table 5 add 172.23.4.0/22
+${fwcmd} table 5 add 172.23.8.0/21
+${fwcmd} table 5 add 172.23.16.0/20
+${fwcmd} table 5 add 172.23.32.0/19
+${fwcmd} table 5 add 172.23.64.0/18
+${fwcmd} table 5 add 172.23.128.0/17
+${fwcmd} table 5 add 172.24.0.0/13
+${fwcmd} table 5 add 169.254.0.0/16
+${fwcmd} table 5 add 192.0.2.0/24
+${fwcmd} table 5 add 192.168.0.0/16
+${fwcmd} table 5 add 224.0.0.0/4
+${fwcmd} table 5 add 239.0.0.0/8
+${fwcmd} table 5 add 240.0.0.0/4
+
+########### TABLE  66  # tndnr ###################
+##
+#${fwcmd} table 66 add dn.ua
+#${fwcmd} table 66 add gazeta.06237.info
+#${fwcmd} table 66 add ru.tsn.ua
+#${fwcmd} table 66 add www.24tv.ua
+#${fwcmd} table 66 add www.5.ua
+#${fwcmd} table 66 add www.62.ua
+#${fwcmd} table 66 add www.6264.com.ua
+#${fwcmd} table 66 add www.0622ua.com
+#${fwcmd} table 66 add www.06239.com.ua
+#${fwcmd} table 66 add www.06252.com.ua
+#${fwcmd} table 66 add www.06254.in.ua
+#${fwcmd} table 66 add www.06255.com
+#${fwcmd} table 66 add www.06257.in.ua
+#${fwcmd} table 66 add www.06274.com.ua
+#${fwcmd} table 66 add www.amvrosievka.dn.ua
+#${fwcmd} table 66 add www.censor.net.ua
+#${fwcmd} table 66 add www.expres.ua
+#${fwcmd} table 66 add www.dn.com.ua
+#${fwcmd} table 66 add www.dnl.dn.ua
+#${fwcmd} table 66 add www.informator.lg.ua
+#${fwcmd} table 66 add www.konstantinovka.dn.ua
+#${fwcmd} table 66 add www.news.liga.net
+#${fwcmd} table 66 add www.novosti.dn.ua
+#${fwcmd} table 66 add www.hi.dn.ua
+#${fwcmd} table 66 add www.hromadske.dn.ua
+#${fwcmd} table 66 add www.hromadske.tv
+#${fwcmd} table 66 add www.hvylya.net
+#${fwcmd} table 66 add www.obozrevatel.com
+#${fwcmd} table 66 add www.orbita.dn.ua
+#${fwcmd} table 66 add www.ostro.org
+#${fwcmd} table 66 add www.pravda.dn.ua
+#${fwcmd} table 66 add www.radiosvoboda.org
+#${fwcmd} table 66 add www.reukraine.blogspot.com
+#${fwcmd} table 66 add www.segodnya.ua
+#${fwcmd} table 66 add www.slavdelo.dn.ua
+#${fwcmd} table 66 add www.slavinfo.dn.ua
+#${fwcmd} table 66 add www.socportal.info
+#${fwcmd} table 66 add www.ukrinfonews.com.ua
+#${fwcmd} table 66 add www.ura.dn.ua
+##
+##################################################
