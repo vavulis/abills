@@ -1,0 +1,12 @@
+www.liqpay.com
+liqpay.com
+ecommerce.liqpay.com
+www.google-analytics.com
+google-analytics.com
+ssl.google-analytics.com
+widget.siteheart.com
+static.siteheart.com
+static.liqpay.com
+fonts.googleapis.com
+ajax.googleapis.com
+themes.googleusercontent.com
